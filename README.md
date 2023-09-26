@@ -41,6 +41,8 @@
 
 ## Компонентная диаграмма системы
 
+![](img/uml.svg)
+
 ## Экраны 
 
 - Экран авторизации
@@ -53,3 +55,5 @@
 - Экран просмотра комика
 - Экран добавления/изменения мероприятия
 - Экран добавления/изменения мероприятия
+
+[figma экраны](https://www.figma.com/file/NZxo1dFA5Af1oVXsSOYjJx/%D0%AD%D0%BA%D1%80%D0%B0%D0%BD%D1%8B?type=design&node-id=0-1&mode=design&t=iYfCQuQpIYJNW03z-0) 
