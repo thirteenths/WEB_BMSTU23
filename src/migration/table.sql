@@ -22,7 +22,7 @@ CREATE TABLE Person(
 
 CREATE TABLE Comic(
   id SERIAL PRIMARY KEY NOT NULL ,
-  id_image INTEGER REFERENCES Image(id) NOT NULL,
+  image TEXT DEFAULT '',
   name TEXT NOT NULL ,
   city TEXT DEFAULT 'Столица юмора',
   sentence TEXT DEFAULT '',
@@ -43,7 +43,7 @@ CREATE TABLE Event(
 
 CREATE TABLE Poster(
   id SERIAL PRIMARY KEY NOT NULL,
-  id_image INTEGER REFERENCES Image(id) NOT NULL,
+  image TEXT DEFAULT '',
   id_event INTEGER REFERENCES Event(id) NOT NULL,
   id_plate INTEGER REFERENCES Place(id) NOT NULL,
   date TIMESTAMP NOT NULL

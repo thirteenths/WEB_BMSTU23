@@ -1,0 +1,1 @@
+INSERT INTO COMIC(ID_IMAGE, NAME, CITY, SENTENCE, COUNT_KEK) VALUES (1, 'Александр Ермаков' , '', '', 0);
