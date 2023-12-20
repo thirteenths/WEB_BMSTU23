@@ -2,7 +2,6 @@ package postgres
 
 import (
 	"context"
-	"fmt"
 	"github.com/jackc/pgx"
 	"time"
 )
@@ -12,16 +11,16 @@ type Connect struct {
 	tx *pgx.Tx
 }
 
-func NewConnect(user, password, database string) (*Connect, error) {
+func NewConnect(url string) (*Connect, error) {
 	//cfg := pgx.ConnConfig{User: "postgres", Password: "password", Database: "postgres", Port: 5438}
 	//cfg := pgx.ConnConfig{User: user, Password: password, Database: database, Port: 5432}
 
-	url := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
-		"standup",
-		"password",
-		"postgres",
-		5432,
-		"postgres")
+	/*url := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
+	"standup",
+	"password",
+	"postgres",
+	5432,
+	"standup")*/
 
 	cfg, err := pgx.ParseConnectionString(url)
 

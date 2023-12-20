@@ -24,7 +24,7 @@ import (
 
 func main() {
 
-	storage, err := postgres.NewPostgresStorage("standup", "password", "standup")
+	storage, err := postgres.NewPostgresStorage("postgres://standup:password@postgres:5432/standup?sslmode=disable")
 	if err != nil {
 		logrus.Fatalf("error %s", err.Error())
 	}

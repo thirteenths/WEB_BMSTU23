@@ -1,8 +1,8 @@
-package modelDB
+package model
 
 type Comic struct {
 	Id       int    `json:"id"`
-	IdImage  int    `json:"id-image"`
+	Image    string `json:"image"`
 	Name     string `json:"name"`
 	City     string `json:"city"`
 	Sentence string `json:"sentence"`
@@ -25,7 +25,7 @@ type Person struct {
 
 type Poster struct {
 	Id      int    `json:"id"`
-	IdImage int    `json:"id_image"`
+	Image   string `json:"image"`
 	IdEvent int    `json:"id_event"`
 	IdPlace int    `json:"id_place"`
 	Date    string `json:"date"`

@@ -1,7 +1,7 @@
 package postgres
 
 import (
-	"github.com/thirteenths/WEB_BMSTU23/backend/internal/modelDB"
+	"github.com/thirteenths/WEB_BMSTU23/backend/internal/model"
 	"github.com/thirteenths/WEB_BMSTU23/backend/pkg/storage"
 )
 
@@ -10,22 +10,22 @@ type Storage struct {
 	QManager storage.DifQManager
 }
 
-func NewPostgresStorage(user, password, database string) (*Storage, error) {
+func NewPostgresStorage(url string) (*Storage, error) {
 
-	conn, err := NewConnect(user, password, database)
+	conn, err := NewConnect(url)
 	if err != nil {
 		return &Storage{}, err
 	}
 
 	Reps := make(map[storage.TableName]storage.Repository)
 
-	Reps[storage.TICKET] = NewRepository(modelDB.Ticket{}, *conn)
-	Reps[storage.PERSON] = NewRepository(modelDB.Person{}, *conn)
-	Reps[storage.EVENT] = NewRepository(modelDB.Event{}, *conn)
-	Reps[storage.COMIC] = NewRepository(modelDB.Comic{}, *conn)
-	Reps[storage.PLACE] = NewRepository(modelDB.Place{}, *conn)
-	Reps[storage.IMAGE] = NewRepository(modelDB.Image{}, *conn)
-	Reps[storage.POSTER] = NewRepository(modelDB.Poster{}, *conn)
+	Reps[storage.TICKET] = NewRepository(model.Ticket{}, *conn)
+	Reps[storage.PERSON] = NewRepository(model.Person{}, *conn)
+	Reps[storage.EVENT] = NewRepository(model.Event{}, *conn)
+	Reps[storage.COMIC] = NewRepository(model.Comic{}, *conn)
+	Reps[storage.PLACE] = NewRepository(model.Place{}, *conn)
+	Reps[storage.IMAGE] = NewRepository(model.Image{}, *conn)
+	Reps[storage.POSTER] = NewRepository(model.Poster{}, *conn)
 
 	return &Storage{Reps: Reps, QManager: NewDifQManager(*conn)}, err
 }

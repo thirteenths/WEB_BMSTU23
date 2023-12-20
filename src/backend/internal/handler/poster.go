@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/thirteenths/WEB_BMSTU23/backend/internal/modelUI"
+	"github.com/thirteenths/WEB_BMSTU23/backend/internal/model"
 	"net/http"
 	"strconv"
 )
@@ -71,16 +71,20 @@ func (h *Handler) GetPoster(c *gin.Context) {
 // @Failure 403 {object} errorResponse
 // @Router /posters [post]
 func (h *Handler) CreatePoster(c *gin.Context) {
-	var poster modelUI.Poster
+	var poster model.Poster
 	if err := c.BindJSON(&poster); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	/*idUser, err := getUserId(c)
+	roleUser, err := getUserRole(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
-	}*/
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+	}
 
 	posterId, err := h.service.IPoster.Add(poster)
 	if err != nil {
@@ -107,11 +111,15 @@ func (h *Handler) CreatePoster(c *gin.Context) {
 // @Failure 403 {object} errorResponse
 // @Router /posters/{id} [delete]
 func (h *Handler) DeletePoster(c *gin.Context) {
-	/*idUser, err := getUserId(c)
+	roleUser, err := getUserRole(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
-	}*/
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+	}
 
 	posterId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -146,6 +154,16 @@ func (h *Handler) CheckInPoster(c *gin.Context) {
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
+	}
+
+	roleUser, err := getUserRole(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if roleUser != 1 {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
 	}
 
 	posterId, err := strconv.Atoi(c.Param("id"))
@@ -184,7 +202,17 @@ func (h *Handler) UpdatePoster(c *gin.Context) {
 		return
 	}
 
-	var poster modelUI.Poster
+	roleUser, err := getUserRole(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+	}
+
+	var poster model.Poster
 	if err := c.BindJSON(&poster); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return

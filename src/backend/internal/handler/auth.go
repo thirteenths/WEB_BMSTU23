@@ -1,10 +1,17 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/thirteenths/WEB_BMSTU23/backend/internal/modelUI"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/thirteenths/WEB_BMSTU23/backend/internal/model"
 )
+
+type SingUpInput struct {
+	Login    string `json:"login" binding:"required"`
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
 
 // SingUp godoc
 // @Summary Create new person.
@@ -19,14 +26,16 @@ import (
 // @Failure 400 {object} errorResponse
 // @Router /auth/singUp [post]
 func (h *Handler) singUp(c *gin.Context) {
-	var input modelUI.Person
+	var input SingUpInput
 
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	id, err := h.service.IAuthorization.CreateUser(input)
+	person := model.Person{Login: input.Login, Email: input.Email, Hash: input.Password, Role: 1}
+
+	id, err := h.service.IAuthorization.CreateUser(person)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

@@ -31,13 +31,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		auth.POST("/singin", h.singIn)
 	}
 
+	h.router.GET("/comics", h.GetAllComic)
+	h.router.GET("/comics/:id", h.GetComic)
 	// Routes
-	comics := h.router.Group("/comics")
-	{
-		comics.GET("/", h.GetAllComic)
-		comics.GET("/:id", h.GetComic)
 
-		comics.POST("/", h.CreateComic, h.userIdentity)
+	comics := h.router.Group("/comics", h.userIdentity)
+	{
+		comics.POST("/", h.CreateComic)
 		comics.DELETE("/:id", h.DeleteComic)
 
 		comics.PUT("/:id", h.UpdateComic)
@@ -50,11 +50,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		posters.GET("/", h.GetAllPoster)
 		posters.GET("/:id", h.GetPoster)
 
-		posters.POST("/", h.CreatePoster)
-		posters.DELETE("/:id", h.DeleteComic)
+		posters.POST("/", h.userIdentity, h.CreatePoster)
+		posters.DELETE("/:id", h.userIdentity, h.DeleteComic)
 
-		posters.POST("/:id", h.CheckInPoster, h.userIdentity)
-		posters.PUT("/:id", h.UpdatePoster)
+		posters.POST("/:id", h.userIdentity, h.CheckInPoster)
+		posters.PUT("/:id", h.userIdentity, h.UpdatePoster)
 	}
 
 	// Routes
@@ -63,10 +63,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		events.GET("/", h.GetAllEvent)
 		events.GET("/:id", h.GetEvent)
 
-		events.POST("/", h.CreateEvent)
-		events.DELETE("/:id", h.DeleteEvent)
+		events.POST("/", h.userIdentity, h.CreateEvent)
+		events.DELETE("/:id", h.userIdentity, h.DeleteEvent)
 
-		events.PUT("/:id", h.UpdateEvent)
+		events.PUT("/:id", h.userIdentity, h.UpdateEvent)
 	}
 
 	// Routes
@@ -75,10 +75,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		places.GET("/", h.GetAllPlace)
 		places.GET("/:id", h.GetPlace)
 
-		places.POST("/", h.CreatePlace)
-		places.DELETE("/:id", h.DeletePlace)
+		places.POST("/", h.userIdentity, h.CreatePlace)
+		places.DELETE("/:id", h.userIdentity, h.DeletePlace)
 
-		places.PUT("/:id", h.UpdatePlace)
+		places.PUT("/:id", h.userIdentity, h.UpdatePlace)
 	}
 
 	// Routes

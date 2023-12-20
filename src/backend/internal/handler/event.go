@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/thirteenths/WEB_BMSTU23/backend/internal/modelUI"
+	"github.com/thirteenths/WEB_BMSTU23/backend/internal/model"
 	"net/http"
 	"strconv"
 )
@@ -71,17 +71,21 @@ func (h *Handler) GetEvent(c *gin.Context) {
 // @Failure 403 {object} errorResponse
 // @Router /events [post]
 func (h *Handler) CreateEvent(c *gin.Context) {
-	var event modelUI.Event
+	var event model.Event
 
 	if err := c.BindJSON(&event); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	/*idUser, err := getUserId(c)
+	roleUser, err := getUserRole(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
-	}*/
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+	}
 
 	eventId, err := h.service.IEvent.Add(event)
 	if err != nil {
@@ -108,11 +112,15 @@ func (h *Handler) CreateEvent(c *gin.Context) {
 // @Failure 403 {object} errorResponse
 // @Router /events/{id} [delete]
 func (h *Handler) DeleteEvent(c *gin.Context) {
-	/*idUser, err := getUserId(c)
+	roleUser, err := getUserRole(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
-	}*/
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+	}
 
 	eventId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -150,7 +158,17 @@ func (h *Handler) UpdateEvent(c *gin.Context) {
 		return
 	}
 
-	var event modelUI.Event
+	roleUser, err := getUserRole(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+	}
+
+	var event model.Event
 	if err := c.BindJSON(&event); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return

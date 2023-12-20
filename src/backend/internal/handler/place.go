@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/thirteenths/WEB_BMSTU23/backend/internal/modelUI"
+	"github.com/thirteenths/WEB_BMSTU23/backend/internal/model"
 	"net/http"
 	"strconv"
 )
@@ -72,17 +72,21 @@ func (h *Handler) GetPlace(c *gin.Context) {
 // @Failure 403 {object} errorResponse
 // @Router /places [post]
 func (h *Handler) CreatePlace(c *gin.Context) {
-	var place modelUI.Place
+	var place model.Place
 
 	if err := c.BindJSON(&place); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	/*idUser, err := getUserId(c)
+	roleUser, err := getUserRole(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
-	}*/
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+	}
 
 	placeId, err := h.service.IPlace.Add(place)
 	if err != nil {
@@ -110,11 +114,15 @@ func (h *Handler) CreatePlace(c *gin.Context) {
 // @Failure 403 {object} errorResponse
 // @Router /places/{id} [delete]
 func (h *Handler) DeletePlace(c *gin.Context) {
-	/*idUser, err := getUserId(c)
+	roleUser, err := getUserRole(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
-	}*/
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+	}
 
 	placeId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -153,7 +161,17 @@ func (h *Handler) UpdatePlace(c *gin.Context) {
 		return
 	}
 
-	var place modelUI.Place
+	roleUser, err := getUserRole(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, err.Error())
+	}
+
+	var place model.Place
 	if err := c.BindJSON(&place); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return

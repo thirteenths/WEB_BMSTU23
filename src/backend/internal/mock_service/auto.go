@@ -1,9 +1,9 @@
 package mock_service
 
 import (
-	"github.com/golang/mock/gomock"
-	"github.com/thirteenths/WEB_BMSTU23/backend/internal/modelUI"
 	"reflect"
+
+	"github.com/golang/mock/gomock"
 )
 
 // MockIAuthorization is a mock of IAuthorization interface.
@@ -30,7 +30,7 @@ func (m *MockIAuthorization) EXPECT() *MockIAuthorizationMockRecorder {
 }
 
 // CreateUser mocks base method.
-func (m *MockIAuthorization) CreateUser(arg0 modelUI.Person) (int, error) {
+func (m *MockIAuthorization) CreateUser(arg0 modelDB.Person) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateUser", arg0)
 	ret0, _ := ret[0].(int)

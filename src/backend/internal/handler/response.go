@@ -3,7 +3,7 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"github.com/thirteenths/WEB_BMSTU23/backend/internal/modelUI"
+	"github.com/thirteenths/WEB_BMSTU23/backend/internal/model"
 )
 
 type errorResponse struct {
@@ -20,17 +20,17 @@ func newErrorResponse(c *gin.Context, statusCode int, message string) {
 }
 
 type getAllComicsResponse struct {
-	Data []modelUI.Comic `json:"comics"`
+	Data []model.Comic `json:"comics"`
 }
 
 type getAllEventsResponse struct {
-	Data []modelUI.Event `json:"events"`
+	Data []model.Event `json:"events"`
 }
 
 type getAllPostersResponse struct {
-	Data []modelUI.Poster `json:"posters"`
+	Data []model.Poster `json:"posters"`
 }
 
 type getAllPlacesResponse struct {
-	Data []modelUI.Place `json:"places"`
+	Data []model.Place `json:"places"`
 }

@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/thirteenths/WEB_BMSTU23/backend/internal/modelUI"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
+	"github.com/thirteenths/WEB_BMSTU23/backend/internal/model"
 )
 
 // GetAllComic godoc
@@ -37,7 +38,7 @@ func (h *Handler) GetAllComic(c *gin.Context) {
 // @Accept */*
 // @Produce json
 // @Param id path string true "comic ID"
-// @Success 200 {object} modelUI.Comic
+// @Success 200 {object} model.Comic
 // @Failure 500 {object} errorResponse
 // @Failure 400 {object} errorResponse
 // @Router /comics/{id} [get]
@@ -64,7 +65,7 @@ func (h *Handler) GetComic(c *gin.Context) {
 // @Tags comics
 // @Accept */*
 // @Produce json
-// @Param data body modelUI.Comic true "modelUI.Comic"
+// @Param data body model.Comic true "model.Comic"
 // @Success 201 {object} statusResponse
 // @Failure 500 {object} errorResponse
 // @Failure 400 {object} errorResponse
@@ -72,16 +73,22 @@ func (h *Handler) GetComic(c *gin.Context) {
 // @Failure 403 {object} errorResponse
 // @Router /comics [post]
 func (h *Handler) CreateComic(c *gin.Context) {
-	var comic modelUI.Comic
+	var comic model.Comic
 	if err := c.BindJSON(&comic); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	/*idUser, err := getUserId(c)
+
+	roleUser, err := getUserRole(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
-	}*/
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, "Access is denied")
+		return
+	}
 
 	comicId, err := h.service.IComic.Add(comic)
 	if err != nil {
@@ -109,11 +116,16 @@ func (h *Handler) CreateComic(c *gin.Context) {
 // @Failure 403 {object} errorResponse
 // @Router /comics/{id} [delete]
 func (h *Handler) DeleteComic(c *gin.Context) {
-	/*idUser, err := getUserId(c)
+	roleUser, err := getUserRole(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
-	}*/
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, "Access is denied")
+		return
+	}
 
 	comicId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -138,7 +150,7 @@ func (h *Handler) DeleteComic(c *gin.Context) {
 // @Accept */*
 // @Produce json
 // @Param id path string true "comic ID"
-// @Param data body modelUI.Comic true "modelUI.comic"
+// @Param data body model.Comic true "model.comic"
 // @Success 200 {object} statusResponse
 // @Failure 500 {object} errorResponse
 // @Failure 400 {object} errorResponse
@@ -152,7 +164,18 @@ func (h *Handler) UpdateComic(c *gin.Context) {
 		return
 	}
 
-	var comic modelUI.Comic
+	roleUser, err := getUserRole(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if roleUser != 0 {
+		newErrorResponse(c, http.StatusForbidden, "Access is denied")
+		return
+	}
+
+	var comic model.Comic
 	if err := c.BindJSON(&comic); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -188,7 +211,18 @@ func (h *Handler) UpdateComicKek(c *gin.Context) {
 		return
 	}
 
-	var comic modelUI.Comic
+	roleUser, err := getUserRole(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if roleUser != 1 {
+		newErrorResponse(c, http.StatusForbidden, "Access is denied")
+		return
+	}
+
+	var comic model.Comic
 	if err := c.BindJSON(&comic); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return

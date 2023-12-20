@@ -4,11 +4,11 @@ import (
 	"crypto/sha1"
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/thirteenths/WEB_BMSTU23/backend/internal/modelDB"
-	"github.com/thirteenths/WEB_BMSTU23/backend/internal/modelUI"
-	"github.com/thirteenths/WEB_BMSTU23/backend/pkg/storage"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/thirteenths/WEB_BMSTU23/backend/internal/model"
+	"github.com/thirteenths/WEB_BMSTU23/backend/pkg/storage"
 )
 
 const (
@@ -31,14 +31,13 @@ func NewAuthService(storage storage.IStorage) *AuthService {
 	return &AuthService{storage: storage}
 }
 
-func (s *AuthService) CreateUser(person modelUI.Person) (int, error) {
+func (s *AuthService) CreateUser(person model.Person) (int, error) {
 	person.Hash = generationPasswordHash(person.Hash)
 	return s.storage.Repositories()[storage.PERSON].Insert(person)
 }
 
 func (s *AuthService) GenerationToken(login string, password string) (string, error) {
 	persons, err := s.storage.Repositories()[storage.PERSON].SelectByField("login", login)
-	//s.repository.GetUser(login, generationPasswordHash(password))
 	if err != nil {
 		return "", err
 	}
@@ -47,12 +46,16 @@ func (s *AuthService) GenerationToken(login string, password string) (string, er
 		return "", err
 	}
 
-	var person modelDB.Person
+	var person model.Person
 	person.Id = int(persons[0].([]interface{})[0].(int32))
 	person.Email = persons[0].([]interface{})[1].(string)
 	person.Login = persons[0].([]interface{})[2].(string)
 	person.Hash = persons[0].([]interface{})[4].(string)
 	person.Role = int(persons[0].([]interface{})[5].(int32))
+
+	if person.Hash != generationPasswordHash(password) {
+		return "", errors.New("Wrong password \n" + person.Hash + "\n" + generationPasswordHash(password))
+	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		jwt.StandardClaims{

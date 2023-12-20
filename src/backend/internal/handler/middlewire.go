@@ -2,14 +2,17 @@ package handler
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 const (
-	authorizationHeader = "IAuthorization"
+	authorizationHeader = "Authorization"
 	userCtx             = "userId"
+	userR               = "userRole"
 )
 
 func (h *Handler) userIdentity(c *gin.Context) {
@@ -25,13 +28,14 @@ func (h *Handler) userIdentity(c *gin.Context) {
 		return
 	}
 
-	userId, _, err := h.service.IAuthorization.ParseToken(headerParts[1])
+	userId, userRole, err := h.service.IAuthorization.ParseToken(headerParts[1])
 	if err != nil {
 		newErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return
 	}
-
+	logrus.Printf("Parse token id: %d, role: %d", userId, userRole)
 	c.Set(userCtx, userId)
+	c.Set(userR, userRole)
 }
 
 func getUserId(c *gin.Context) (int, error) {
@@ -46,4 +50,18 @@ func getUserId(c *gin.Context) (int, error) {
 	}
 
 	return idInt, nil
+}
+
+func getUserRole(c *gin.Context) (int, error) {
+	role, ok := c.Get(userR)
+	if !ok {
+		return 0, errors.New("user role not found")
+	}
+
+	roleInt, ok := role.(int)
+	if !ok {
+		return 0, errors.New("user role is of invalid type")
+	}
+
+	return roleInt, nil
 }
