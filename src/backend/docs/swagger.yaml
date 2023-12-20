@@ -1,0 +1,891 @@
+definitions:
+  handler.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  handler.getAllComicsResponse:
+    properties:
+      comics:
+        items:
+          $ref: '#/definitions/modelUI.Comic'
+        type: array
+    type: object
+  handler.getAllEventsResponse:
+    properties:
+      events:
+        items:
+          $ref: '#/definitions/modelUI.Event'
+        type: array
+    type: object
+  handler.getAllPostersResponse:
+    properties:
+      posters:
+        items:
+          $ref: '#/definitions/modelUI.Poster'
+        type: array
+    type: object
+  handler.singInInput:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  handler.statusResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  modelUI.Comic:
+    properties:
+      _:
+        type: integer
+      city:
+        type: string
+      countOfKek:
+        type: integer
+      image:
+        type: string
+      name:
+        type: string
+      sentence:
+        type: string
+    type: object
+  modelUI.Event:
+    properties:
+      about:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  modelUI.Person:
+    properties:
+      _:
+        type: integer
+      email:
+        type: string
+      hash:
+        type: string
+      login:
+        type: string
+      role:
+        type: integer
+      salt:
+        type: string
+    type: object
+  modelUI.Place:
+    properties:
+      count_ticket:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  modelUI.Poster:
+    properties:
+      _:
+        type: integer
+      about:
+        type: string
+      date:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      place:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/singIn:
+    post:
+      consumes:
+      - '*/*'
+      description: post person
+      operationId: sing-in-person
+      parameters:
+      - description: singInInput
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handler.singInInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Sing in person.
+      tags:
+      - auth
+  /auth/singUp:
+    post:
+      consumes:
+      - '*/*'
+      description: post person
+      operationId: create-person
+      parameters:
+      - description: modelUI.Person
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/modelUI.Person'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create new person.
+      tags:
+      - auth
+  /comics:
+    get:
+      consumes:
+      - '*/*'
+      description: get comics.
+      operationId: get-all-comic
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.getAllComicsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/handler.errorResponse'
+            - properties:
+                message: {}
+              type: object
+      summary: Show All info about comics.
+      tags:
+      - comics
+    post:
+      consumes:
+      - '*/*'
+      description: post comic
+      operationId: create-comic
+      parameters:
+      - description: modelUI.Comic
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/modelUI.Comic'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create new comic.
+      tags:
+      - comics
+  /comics/{id}:
+    delete:
+      consumes:
+      - '*/*'
+      description: delete comic by ID
+      operationId: delete-comic
+      parameters:
+      - description: comic ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete a comic item by ID.
+      tags:
+      - comics
+    get:
+      consumes:
+      - '*/*'
+      description: get comic by ID.
+      operationId: get-comic
+      parameters:
+      - description: comic ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/modelUI.Comic'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Show info about comic.
+      tags:
+      - comics
+    patch:
+      consumes:
+      - '*/*'
+      description: update comic by ID
+      operationId: update-comic
+      parameters:
+      - description: comic ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: string
+        in: body
+        name: data
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update count of kek comic item by ID.
+      tags:
+      - comics
+    put:
+      consumes:
+      - '*/*'
+      description: update comic by ID
+      operationId: update-comic
+      parameters:
+      - description: comic ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: modelUI.comic
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/modelUI.Comic'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update info about comic item by ID.
+      tags:
+      - comics
+  /events:
+    get:
+      consumes:
+      - '*/*'
+      description: get events.
+      operationId: get-all-event
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.getAllEventsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Show All info about events.
+      tags:
+      - events
+    post:
+      consumes:
+      - '*/*'
+      description: post event
+      operationId: create-event
+      parameters:
+      - description: modelUI.event
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/modelUI.Event'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create new event.
+      tags:
+      - events
+  /events/{id}:
+    delete:
+      consumes:
+      - '*/*'
+      description: delete event by ID
+      operationId: delete-event
+      parameters:
+      - description: event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete a event item by ID.
+      tags:
+      - events
+    get:
+      consumes:
+      - '*/*'
+      description: get event by ID.
+      operationId: get-event
+      parameters:
+      - description: event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/modelUI.Event'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Show info about event.
+      tags:
+      - events
+    put:
+      consumes:
+      - '*/*'
+      description: update poster by ID
+      operationId: update-event
+      parameters:
+      - description: event ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: modelUI.event
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/modelUI.Event'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update info about event item by ID.
+      tags:
+      - events
+  /places:
+    get:
+      consumes:
+      - '*/*'
+      description: get places.
+      operationId: get-all-place
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.getAllEventsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Show All info about places.
+      tags:
+      - places
+    post:
+      consumes:
+      - '*/*'
+      description: post place
+      operationId: create-place
+      parameters:
+      - description: modelUI.place
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/modelUI.Place'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create new place.
+      tags:
+      - places
+  /places/{id}:
+    delete:
+      consumes:
+      - '*/*'
+      description: delete place by ID
+      operationId: delete-place
+      parameters:
+      - description: place ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete a place item by ID.
+      tags:
+      - places
+    get:
+      consumes:
+      - '*/*'
+      description: get place by ID.
+      operationId: get-place
+      parameters:
+      - description: place ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/modelUI.Place'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Show info about place.
+      tags:
+      - places
+    put:
+      consumes:
+      - '*/*'
+      description: update place by ID
+      operationId: update-place
+      parameters:
+      - description: place ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: modelUI.place
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/modelUI.Place'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update info about place item by ID.
+      tags:
+      - places
+  /posters:
+    get:
+      consumes:
+      - '*/*'
+      description: get posters.
+      operationId: get-all-poster
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.getAllPostersResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Show All info about posters.
+      tags:
+      - posters
+    post:
+      consumes:
+      - '*/*'
+      description: post poster
+      operationId: create-poster
+      parameters:
+      - description: modelUI.Poster
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/modelUI.Poster'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Create new poster.
+      tags:
+      - posters
+  /posters/{id}:
+    delete:
+      consumes:
+      - '*/*'
+      description: delete poster by ID
+      operationId: delete-poster
+      parameters:
+      - description: poster ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete a poster item by ID.
+      tags:
+      - posters
+    get:
+      consumes:
+      - '*/*'
+      description: get poster by ID.
+      operationId: get-poster
+      parameters:
+      - description: poster ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/modelUI.Poster'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Show info about poster.
+      tags:
+      - posters
+    post:
+      consumes:
+      - '*/*'
+      description: check in comic by ID
+      operationId: check-in-poster
+      parameters:
+      - description: poster ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: CheckIn poster item by ID.
+      tags:
+      - posters
+    put:
+      consumes:
+      - '*/*'
+      description: update poster by ID
+      operationId: update-poster
+      parameters:
+      - description: poster ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: modelUI.poster
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/modelUI.Poster'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.statusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update info about poster item by ID.
+      tags:
+      - posters
+swagger: "2.0"

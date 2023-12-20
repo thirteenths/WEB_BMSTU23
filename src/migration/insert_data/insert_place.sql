@@ -1,0 +1,2 @@
+INSERT INTO PLACE(name, count_ticket) VALUES ('БЗЦКИ', 100);
+INSERT INTO PLACE(NAME, COUNT_TICKET) VALUES ('МЗЦКИ', 50);
