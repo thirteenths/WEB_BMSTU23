@@ -22,8 +22,8 @@ func (s *EventService) GetAll() ([]model.Event, error) {
 		return nil, err
 	}
 
-	for i, event := range events {
-		eventsUI[i] = transportEventModel(event)
+	for _, event := range events {
+		eventsUI = append(eventsUI, transportEventModel(event))
 	}
 
 	return eventsUI, nil

@@ -21,8 +21,8 @@ func (cs *ComicService) GetAll() ([]model.Comic, error) {
 		return nil, err
 	}
 
-	for i, comic := range comics {
-		comicUI[i] = transportComicModel(comic)
+	for _, comic := range comics {
+		comicUI = append(comicUI, transportComicModel(comic))
 	}
 
 	return comicUI, nil

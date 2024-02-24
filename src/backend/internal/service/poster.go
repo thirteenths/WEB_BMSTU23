@@ -21,8 +21,8 @@ func (ps *PosterService) GetAll() ([]model.Poster, error) {
 		return nil, err
 	}
 
-	for i, poster := range posters {
-		postersUI[i] = transportPosterModel(poster)
+	for _, poster := range posters {
+		postersUI = append(postersUI, transportPosterModel(poster))
 	}
 
 	return postersUI, nil

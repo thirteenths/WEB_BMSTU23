@@ -22,8 +22,8 @@ func (s *PlaceService) GetAll() ([]model.Place, error) {
 		return nil, err
 	}
 
-	for i, place := range places {
-		placesUI[i] = transportPlaceModel(place)
+	for _, place := range places {
+		placesUI = append(placesUI, transportPlaceModel(place))
 	}
 	return placesUI, nil
 }

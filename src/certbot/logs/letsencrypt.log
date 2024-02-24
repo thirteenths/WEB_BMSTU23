@@ -1,0 +1,141 @@
+2024-01-07 18:20:48,452:DEBUG:certbot._internal.main:certbot version: 2.8.0
+2024-01-07 18:20:48,452:DEBUG:certbot._internal.main:Location of certbot entry point: /usr/local/bin/certbot
+2024-01-07 18:20:48,453:DEBUG:certbot._internal.main:Arguments: ['--webroot', '--webroot-path=/var/www/html', '--email', 'vera.korotkaya@yandex.ru', '--agree-tos', '--no-eff-email', '-d', 'example.com', '-d', 'www.example.com']
+2024-01-07 18:20:48,453:DEBUG:certbot._internal.main:Discovered plugins: PluginsRegistry(PluginEntryPoint#manual,PluginEntryPoint#null,PluginEntryPoint#standalone,PluginEntryPoint#webroot)
+2024-01-07 18:20:48,493:DEBUG:certbot._internal.log:Root logging level set at 30
+2024-01-07 18:20:48,495:DEBUG:certbot._internal.plugins.selection:Requested authenticator webroot and installer None
+2024-01-07 18:20:48,496:DEBUG:certbot._internal.plugins.selection:Single candidate plugin: * webroot
+Description: Saves the necessary validation files to a .well-known/acme-challenge/ directory within the nominated webroot path. A seperate HTTP server must be running and serving files from the webroot path. HTTP challenge only (wildcards not supported).
+Interfaces: Authenticator, Plugin
+Entry point: EntryPoint(name='webroot', value='certbot._internal.plugins.webroot:Authenticator', group='certbot.plugins')
+Initialized: <certbot._internal.plugins.webroot.Authenticator object at 0x7f7f7aa4f730>
+Prep: True
+2024-01-07 18:20:48,497:DEBUG:certbot._internal.plugins.selection:Selected authenticator <certbot._internal.plugins.webroot.Authenticator object at 0x7f7f7aa4f730> and installer None
+2024-01-07 18:20:48,497:INFO:certbot._internal.plugins.selection:Plugins selected: Authenticator webroot, Installer None
+2024-01-07 18:20:48,664:DEBUG:certbot._internal.main:Picked account: <Account(RegistrationResource(body=Registration(key=None, contact=(), agreement=None, status=None, terms_of_service_agreed=None, only_return_existing=None, external_account_binding=None), uri='https://acme-v02.api.letsencrypt.org/acme/acct/1504482216', new_authzr_uri=None, terms_of_service=None), 5630d84d4c2f1f46674711ecac42b4f0, Meta(creation_dt=datetime.datetime(2024, 1, 7, 18, 7, 19, tzinfo=<UTC>), creation_host='e19111b67962', register_to_eff=None))>
+2024-01-07 18:20:48,665:DEBUG:acme.client:Sending GET request to https://acme-v02.api.letsencrypt.org/directory.
+2024-01-07 18:20:48,678:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): acme-v02.api.letsencrypt.org:443
+2024-01-07 18:20:49,370:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "GET /directory HTTP/1.1" 200 752
+2024-01-07 18:20:49,371:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sun, 07 Jan 2024 18:20:49 GMT
+Content-Type: application/json
+Content-Length: 752
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "keyChange": "https://acme-v02.api.letsencrypt.org/acme/key-change",
+  "meta": {
+    "caaIdentities": [
+      "letsencrypt.org"
+    ],
+    "termsOfService": "https://letsencrypt.org/documents/LE-SA-v1.3-September-21-2022.pdf",
+    "website": "https://letsencrypt.org"
+  },
+  "newAccount": "https://acme-v02.api.letsencrypt.org/acme/new-acct",
+  "newNonce": "https://acme-v02.api.letsencrypt.org/acme/new-nonce",
+  "newOrder": "https://acme-v02.api.letsencrypt.org/acme/new-order",
+  "oZEP8fnacr4": "https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417",
+  "renewalInfo": "https://acme-v02.api.letsencrypt.org/draft-ietf-acme-ari-01/renewalInfo/",
+  "revokeCert": "https://acme-v02.api.letsencrypt.org/acme/revoke-cert"
+}
+2024-01-07 18:20:49,372:DEBUG:certbot._internal.display.obj:Notifying user: Requesting a certificate for example.com and www.example.com
+2024-01-07 18:20:49,383:DEBUG:acme.client:Requesting fresh nonce
+2024-01-07 18:20:49,383:DEBUG:acme.client:Sending HEAD request to https://acme-v02.api.letsencrypt.org/acme/new-nonce.
+2024-01-07 18:20:49,676:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "HEAD /acme/new-nonce HTTP/1.1" 200 0
+2024-01-07 18:20:49,677:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sun, 07 Jan 2024 18:20:49 GMT
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: I5zfHDkYU3_9wSriQGlwva0H-AeY6yey0XLhLz6j38GTjyoUdqs
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+
+2024-01-07 18:20:49,678:DEBUG:acme.client:Storing nonce: I5zfHDkYU3_9wSriQGlwva0H-AeY6yey0XLhLz6j38GTjyoUdqs
+2024-01-07 18:20:49,678:DEBUG:acme.client:JWS payload:
+b'{\n  "identifiers": [\n    {\n      "type": "dns",\n      "value": "example.com"\n    },\n    {\n      "type": "dns",\n      "value": "www.example.com"\n    }\n  ]\n}'
+2024-01-07 18:20:49,685:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/new-order:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMTUwNDQ4MjIxNiIsICJub25jZSI6ICJJNXpmSERrWVUzXzl3U3JpUUdsd3ZhMEgtQWVZNnlleTBYTGhMejZqMzhHVGp5b1VkcXMiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL25ldy1vcmRlciJ9",
+  "signature": "lqWzzyTzo2su94p5XHeVUeo05KBc2glOj9wWVaZbrniA3IacpEQv9UnNJDFK4bKtuGS0JgPk5XUYyT4xma3rcA2FuZcxVPnYdN0nocRG9Hd2YEAQEfgTuXj1UMPk4Z8JieWcUF0YC7iy2PJg_s9mGq8JWDbA8QzEEtd8ezo5R2qUjjUG6Qimxly_cAfVfj7EGIp2IXIKEXdoCNIheK1Rx87YAUJVeX0WxvXtIKYAC4lE3LRnb4xl4elTRA43S9XSnLc9a3yjVlnyD5ypia0woKfiZR28JKZfiVSlnyhve8tbZf6YjW55Dj8Fl9mynX9JoXmKya46tAY8IhX9b1sjpA",
+  "payload": "ewogICJpZGVudGlmaWVycyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAiZG5zIiwKICAgICAgInZhbHVlIjogImV4YW1wbGUuY29tIgogICAgfSwKICAgIHsKICAgICAgInR5cGUiOiAiZG5zIiwKICAgICAgInZhbHVlIjogInd3dy5leGFtcGxlLmNvbSIKICAgIH0KICBdCn0"
+}
+2024-01-07 18:20:49,871:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/new-order HTTP/1.1" 400 1014
+2024-01-07 18:20:49,873:DEBUG:acme.client:Received response:
+HTTP 400
+Server: nginx
+Date: Sun, 07 Jan 2024 18:20:49 GMT
+Content-Type: application/problem+json
+Content-Length: 1014
+Connection: keep-alive
+Boulder-Requester: 1504482216
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: zXX7izQwO7uRqJYpYXttQHLGoNRbUGJOXoxFEnnOc-2TxLnPvqY
+
+{
+  "type": "urn:ietf:params:acme:error:rejectedIdentifier",
+  "detail": "Error creating new order :: Cannot issue for \"example.com\": The ACME server refuses to issue a certificate for this domain name, because it is forbidden by policy (and 1 more problems. Refer to sub-problems for more information.)",
+  "status": 400,
+  "subproblems": [
+    {
+      "type": "urn:ietf:params:acme:error:rejectedIdentifier",
+      "detail": "Error creating new order :: The ACME server refuses to issue a certificate for this domain name, because it is forbidden by policy",
+      "status": 400,
+      "identifier": {
+        "type": "dns",
+        "value": "example.com"
+      }
+    },
+    {
+      "type": "urn:ietf:params:acme:error:rejectedIdentifier",
+      "detail": "Error creating new order :: The ACME server refuses to issue a certificate for this domain name, because it is forbidden by policy",
+      "status": 400,
+      "identifier": {
+        "type": "dns",
+        "value": "www.example.com"
+      }
+    }
+  ]
+}
+2024-01-07 18:20:49,874:DEBUG:certbot._internal.log:Exiting abnormally:
+Traceback (most recent call last):
+  File "/usr/local/bin/certbot", line 33, in <module>
+    sys.exit(load_entry_point('certbot', 'console_scripts', 'certbot')())
+  File "/opt/certbot/src/certbot/certbot/main.py", line 19, in main
+    return internal_main.main(cli_args)
+  File "/opt/certbot/src/certbot/certbot/_internal/main.py", line 1869, in main
+    return config.func(config, plugins)
+  File "/opt/certbot/src/certbot/certbot/_internal/main.py", line 1600, in certonly
+    lineage = _get_and_save_cert(le_client, config, domains, certname, lineage)
+  File "/opt/certbot/src/certbot/certbot/_internal/main.py", line 143, in _get_and_save_cert
+    lineage = le_client.obtain_and_enroll_certificate(domains, certname)
+  File "/opt/certbot/src/certbot/certbot/_internal/client.py", line 517, in obtain_and_enroll_certificate
+    cert, chain, key, _ = self.obtain_certificate(domains)
+  File "/opt/certbot/src/certbot/certbot/_internal/client.py", line 428, in obtain_certificate
+    orderr = self._get_order_and_authorizations(csr.data, self.config.allow_subset_of_names)
+  File "/opt/certbot/src/certbot/certbot/_internal/client.py", line 478, in _get_order_and_authorizations
+    orderr = self.acme.new_order(csr_pem)
+  File "/opt/certbot/src/acme/acme/client.py", line 137, in new_order
+    response = self._post(self.directory['newOrder'], order)
+  File "/opt/certbot/src/acme/acme/client.py", line 365, in _post
+    return self.net.post(*args, **kwargs)
+  File "/opt/certbot/src/acme/acme/client.py", line 738, in post
+    return self._post_once(*args, **kwargs)
+  File "/opt/certbot/src/acme/acme/client.py", line 751, in _post_once
+    response = self._check_response(response, content_type=content_type)
+  File "/opt/certbot/src/acme/acme/client.py", line 602, in _check_response
+    raise messages.Error.from_json(jobj)
+acme.messages.Error: urn:ietf:params:acme:error:rejectedIdentifier :: The server will not issue certificates for the identifier :: Error creating new order :: Cannot issue for "example.com": The ACME server refuses to issue a certificate for this domain name, because it is forbidden by policy (and 1 more problems. Refer to sub-problems for more information.)
+Problem for example.com: urn:ietf:params:acme:error:rejectedIdentifier :: The server will not issue certificates for the identifier :: Error creating new order :: The ACME server refuses to issue a certificate for this domain name, because it is forbidden by policy
+Problem for www.example.com: urn:ietf:params:acme:error:rejectedIdentifier :: The server will not issue certificates for the identifier :: Error creating new order :: The ACME server refuses to issue a certificate for this domain name, because it is forbidden by policy
+2024-01-07 18:20:49,878:ERROR:certbot._internal.log:An unexpected error occurred:
+2024-01-07 18:20:49,878:ERROR:certbot._internal.log:Error creating new order :: Cannot issue for "example.com": The ACME server refuses to issue a certificate for this domain name, because it is forbidden by policy (and 1 more problems. Refer to sub-problems for more information.)

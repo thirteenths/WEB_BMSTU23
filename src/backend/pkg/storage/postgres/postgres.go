@@ -12,16 +12,6 @@ type Connect struct {
 }
 
 func NewConnect(url string) (*Connect, error) {
-	//cfg := pgx.ConnConfig{User: "postgres", Password: "password", Database: "postgres", Port: 5438}
-	//cfg := pgx.ConnConfig{User: user, Password: password, Database: database, Port: 5432}
-
-	/*url := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
-	"standup",
-	"password",
-	"postgres",
-	5432,
-	"standup")*/
-
 	cfg, err := pgx.ParseConnectionString(url)
 
 	cpfg := pgx.ConnPoolConfig{ConnConfig: cfg, MaxConnections: 20, AcquireTimeout: time.Second * 30}

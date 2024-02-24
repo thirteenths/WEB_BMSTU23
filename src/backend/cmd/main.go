@@ -16,6 +16,8 @@ package main
 // @query.collection.format multi
 import (
 	"github.com/sirupsen/logrus"
+	"os"
+
 	"github.com/thirteenths/WEB_BMSTU23/backend/internal/handler"
 	"github.com/thirteenths/WEB_BMSTU23/backend/internal/service"
 	"github.com/thirteenths/WEB_BMSTU23/backend/pkg/server"
@@ -24,9 +26,9 @@ import (
 
 func main() {
 
-	storage, err := postgres.NewPostgresStorage("postgres://standup:password@postgres:5432/standup?sslmode=disable")
+	storage, err := postgres.NewPostgresStorage(os.Getenv("PG_CONNECT"))
 	if err != nil {
-		logrus.Fatalf("error %s", err.Error())
+		logrus.Fatalf("error %s, %s", err.Error(), os.Getenv("PG_CONNECT"))
 	}
 
 	serv := service.NewService(storage)
