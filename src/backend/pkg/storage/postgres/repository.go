@@ -1,8 +1,9 @@
 package postgres
 
 import (
-	"github.com/thirteenths/WEB_BMSTU23/backend/pkg/storage"
 	"log"
+
+	"github.com/thirteenths/WEB_BMSTU23/backend/pkg/storage"
 )
 
 type Repository struct {
@@ -109,6 +110,9 @@ func (r *Repository) SelectAll() ([]storage.Model, error) {
 	for rows.Next() {
 		var model storage.Model
 		model, err = rows.Values()
+		if err != nil {
+			return nil, err
+		}
 		models = append(models, model)
 	}
 	return models, err

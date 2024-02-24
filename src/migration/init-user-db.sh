@@ -10,9 +10,16 @@ set -e
     #ALTER DATABASE standup OWNER TO standup;
 #EOSQL
 
-psql -U standup -d standup -f /docker-entrypoint-initdb.d/table.sql
+#psql -U standup -d standup -f /docker-entrypoint-initdb.d/table.sql
 
-psql -U standup -d standup -f /docker-entrypoint-initdb.d/insert_data/insert_place.sql
-psql -U standup -d standup -f /docker-entrypoint-initdb.d/insert_data/insert_event.sql
-psql -U standup -d standup -f /docker-entrypoint-initdb.d/insert_data/insert_comic.sql
-psql -U standup -d standup -f /docker-entrypoint-initdb.d/insert_data/insert_poster.sql
+#psql -U standup -d standup -f /docker-entrypoint-initdb.d/insert_data/insert_place.sql
+#psql -U standup -d standup -f /docker-entrypoint-initdb.d/insert_data/insert_event.sql
+#psql -U standup -d standup -f /docker-entrypoint-initdb.d/insert_data/insert_comic.sql
+#psql -U standup -d standup -f /docker-entrypoint-initdb.d/insert_data/insert_poster.sql
+
+psql -U user -d postgres -f /docker-entrypoint-initdb.d/table.sql
+
+psql -U user -d postgres -f /docker-entrypoint-initdb.d/insert_data/insert_place.sql
+psql -U user -d postgres -f /docker-entrypoint-initdb.d/insert_data/insert_event.sql
+psql -U user -d postgres -f /docker-entrypoint-initdb.d/insert_data/insert_comic.sql
+psql -U user -d postgres -f /docker-entrypoint-initdb.d/insert_data/insert_poster.sql
